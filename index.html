@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LUXE — Premium Store</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0c0c0c;
+      --surface: #141414;
+      --card: #1a1a1a;
+      --border: #2a2a2a;
+      --gold: #c9a84c;
+      --gold-light: #e8c97a;
+      --text: #f0ece4;
+      --muted: #888;
+      --red: #e05c5c;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.2rem 3rem;
+      background: rgba(12,12,12,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem; font-weight: 700;
+      color: var(--gold); letter-spacing: 4px; text-transform: uppercase;
+    }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a {
+      color: var(--muted); text-decoration: none; font-size: 0.82rem;
+      letter-spacing: 2px; text-transform: uppercase;
+      transition: color 0.3s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+    .nav-actions { display: flex; gap: 1rem; align-items: center; }
+    .cart-btn {
+      background: none; border: 1px solid var(--border);
+      color: var(--text); padding: 0.5rem 1.2rem;
+      font-family: 'DM Sans', sans-serif; font-size: 0.8rem;
+      letter-spacing: 2px; text-transform: uppercase;
+      cursor: pointer; transition: all 0.3s;
+    }
+    .cart-btn:hover { border-color: var(--gold); color: var(--gold); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+      padding: 8rem 2rem 4rem;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 0%, rgba(201,168,76,0.08) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 40% at 80% 80%, rgba(201,168,76,0.04) 0%, transparent 60%);
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(
+        0deg, transparent, transparent 59px, rgba(255,255,255,0.015) 60px
+      ),
+      repeating-linear-gradient(
+        90deg, transparent, transparent 59px, rgba(255,255,255,0.015) 60px
+      );
+    }
+    .hero-eyebrow {
+      font-size: 0.72rem; letter-spacing: 5px; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 1.5rem;
+      animation: fadeUp 0.8s ease both;
+    }
+    .hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3.5rem, 8vw, 7rem);
+      font-weight: 300; line-height: 1.05;
+      letter-spacing: -1px;
+      animation: fadeUp 0.8s 0.15s ease both;
+    }
+    .hero h1 em { font-style: italic; color: var(--gold); }
+    .hero-sub {
+      margin-top: 1.5rem; max-width: 480px;
+      color: var(--muted); font-size: 1rem; line-height: 1.7;
+      animation: fadeUp 0.8s 0.3s ease both;
+    }
+    .hero-cta {
+      margin-top: 3rem; display: flex; gap: 1rem; justify-content: center;
+      animation: fadeUp 0.8s 0.45s ease both;
+    }
+    .btn-primary {
+      background: var(--gold); color: #0c0c0c;
+      border: none; padding: 1rem 2.5rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.82rem; font-weight: 500;
+      letter-spacing: 2px; text-transform: uppercase;
+      cursor: pointer; transition: all 0.3s;
+      text-decoration: none; display: inline-block;
+    }
+    .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); }
+    .btn-ghost {
+      background: none; color: var(--text);
+      border: 1px solid var(--border); padding: 1rem 2.5rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.82rem; letter-spacing: 2px; text-transform: uppercase;
+      cursor: pointer; transition: all 0.3s;
+      text-decoration: none; display: inline-block;
+    }
+    .btn-ghost:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-2px); }
+
+    /* ── SECTION HEADER ── */
+    .section { padding: 6rem 3rem; }
+    .section-tag {
+      font-size: 0.7rem; letter-spacing: 4px;
+      text-transform: uppercase; color: var(--gold);
+      margin-bottom: 0.8rem;
+    }
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 400; margin-bottom: 1rem;
+    }
+    .section-sub { color: var(--muted); max-width: 480px; line-height: 1.7; }
+
+    /* ── PRODUCTS ── */
+    #products { background: var(--surface); }
+    .products-header { text-align: center; margin-bottom: 3rem; }
+    .products-header .section-sub { margin: 0 auto; }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+      max-width: 1200px; margin: 0 auto;
+    }
+    .product-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      transition: transform 0.4s, border-color 0.4s;
+      cursor: pointer; position: relative;
+    }
+    .product-card:hover { transform: translateY(-6px); border-color: var(--gold); }
+    .product-img {
+      width: 100%; aspect-ratio: 3/4;
+      object-fit: cover; display: block;
+      background: var(--bg);
+      position: relative; overflow: hidden;
+    }
+    /* Placeholder gradient images */
+    .product-img.p1 { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); }
+    .product-img.p2 { background: linear-gradient(135deg, #1a0a0a 0%, #3d1111 50%, #6b1f1f 100%); }
+    .product-img.p3 { background: linear-gradient(135deg, #0a1a0a 0%, #0f3d0f 50%, #1a6b1a 100%); }
+    .product-img.p4 { background: linear-gradient(135deg, #1a1206 0%, #3d2e0e 50%, #6b501a 100%); }
+    .product-img.p5 { background: linear-gradient(135deg, #0a0a1a 0%, #1a1040 50%, #2a1a70 100%); }
+    .product-img.p6 { background: linear-gradient(135deg, #1a0a14 0%, #3d1130 50%, #6b1f55 100%); }
+    .product-img-inner {
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .product-icon { font-size: 4rem; opacity: 0.5; }
+    .product-badge {
+      position: absolute; top: 1rem; left: 1rem;
+      background: var(--gold); color: #0c0c0c;
+      font-size: 0.65rem; letter-spacing: 2px;
+      text-transform: uppercase; padding: 0.25rem 0.6rem;
+    }
+    .product-info { padding: 1.2rem; }
+    .product-category {
+      font-size: 0.65rem; letter-spacing: 3px;
+      text-transform: uppercase; color: var(--gold);
+      margin-bottom: 0.4rem;
+    }
+    .product-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem; font-weight: 400;
+      margin-bottom: 0.5rem;
+    }
+    .product-footer {
+      display: flex; align-items: center;
+      justify-content: space-between; margin-top: 1rem;
+    }
+    .product-price { font-size: 1.1rem; color: var(--gold-light); font-weight: 500; }
+    .product-old { font-size: 0.85rem; color: var(--muted); text-decoration: line-through; margin-left: 0.5rem; }
+    .add-cart {
+      background: none; border: 1px solid var(--border);
+      color: var(--text); padding: 0.4rem 1rem;
+      font-size: 0.7rem; letter-spacing: 2px;
+      text-transform: uppercase; cursor: pointer;
+      transition: all 0.3s; font-family: 'DM Sans', sans-serif;
+    }
+    .add-cart:hover { background: var(--gold); border-color: var(--gold); color: #0c0c0c; }
+
+    /* Toast */
+    .toast {
+      position: fixed; bottom: 2rem; right: 2rem;
+      background: var(--gold); color: #0c0c0c;
+      padding: 0.8rem 1.5rem;
+      font-size: 0.8rem; letter-spacing: 1px;
+      transform: translateY(4rem); opacity: 0;
+      transition: all 0.4s; z-index: 999;
+      pointer-events: none;
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+
+    /* ── FEATURES ── */
+    #features { background: var(--bg); }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 2rem; max-width: 1000px; margin: 3rem auto 0;
+    }
+    .feature-item {
+      text-align: center; padding: 2rem 1rem;
+      border: 1px solid var(--border);
+      transition: border-color 0.3s;
+    }
+    .feature-item:hover { border-color: var(--gold); }
+    .feature-icon { font-size: 2rem; margin-bottom: 1rem; }
+    .feature-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem; margin-bottom: 0.5rem;
+    }
+    .feature-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
+
+    /* ── CONTACT FORM ── */
+    #contact { background: var(--surface); }
+    .contact-layout {
+      max-width: 900px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 4rem;
+      align-items: start;
+    }
+    .contact-info h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.5rem; font-weight: 300; margin-bottom: 1rem;
+    }
+    .contact-info p { color: var(--muted); line-height: 1.8; margin-bottom: 2rem; }
+    .contact-detail { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+    .contact-detail span { font-size: 1.2rem; }
+    .contact-detail p { color: var(--text); margin: 0; font-size: 0.9rem; }
+
+    .contact-form { position: relative; }
+    .form-group { margin-bottom: 1.5rem; }
+    .form-group label {
+      display: block; font-size: 0.7rem; letter-spacing: 3px;
+      text-transform: uppercase; color: var(--gold);
+      margin-bottom: 0.5rem;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%; background: var(--card);
+      border: 1px solid var(--border); color: var(--text);
+      padding: 0.9rem 1rem;
+      font-family: 'DM Sans', sans-serif; font-size: 0.9rem;
+      outline: none; transition: border-color 0.3s;
+      appearance: none; -webkit-appearance: none;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus { border-color: var(--gold); }
+    .form-group input::placeholder,
+    .form-group textarea::placeholder { color: var(--muted); }
+    .form-group textarea { resize: vertical; min-height: 100px; }
+    .form-group select option { background: var(--card); }
+    .form-error {
+      display: none; font-size: 0.75rem; color: var(--red);
+      margin-top: 0.4rem;
+    }
+    .form-error.visible { display: block; }
+    .form-submit {
+      width: 100%; background: var(--gold); color: #0c0c0c;
+      border: none; padding: 1rem;
+      font-family: 'DM Sans', sans-serif; font-size: 0.82rem;
+      font-weight: 500; letter-spacing: 3px; text-transform: uppercase;
+      cursor: pointer; transition: all 0.3s;
+    }
+    .form-submit:hover { background: var(--gold-light); }
+    .form-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* Thank You */
+    .thank-you {
+      display: none; text-align: center; padding: 3rem 2rem;
+      background: var(--card); border: 1px solid var(--gold);
+      animation: fadeUp 0.6s ease both;
+    }
+    .thank-you.visible { display: block; }
+    .thank-you-icon { font-size: 3rem; margin-bottom: 1rem; }
+    .thank-you h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem; color: var(--gold); margin-bottom: 0.5rem;
+    }
+    .thank-you p { color: var(--muted); line-height: 1.7; font-size: 0.95rem; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+      padding: 3rem;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 3rem;
+    }
+    .footer-brand .nav-logo { font-size: 1.4rem; display: block; margin-bottom: 1rem; }
+    .footer-brand p { color: var(--muted); font-size: 0.85rem; line-height: 1.7; }
+    .footer-col h4 {
+      font-size: 0.7rem; letter-spacing: 3px;
+      text-transform: uppercase; color: var(--gold);
+      margin-bottom: 1.2rem;
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 0.6rem; }
+    .footer-col ul li a {
+      color: var(--muted); text-decoration: none; font-size: 0.85rem;
+      transition: color 0.3s;
+    }
+    .footer-col ul li a:hover { color: var(--gold); }
+    .footer-bottom {
+      border-top: 1px solid var(--border);
+      padding: 1.5rem 3rem;
+      display: flex; align-items: center; justify-content: space-between;
+      color: var(--muted); font-size: 0.8rem;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { display: none; }
+      .section { padding: 4rem 1.5rem; }
+      .contact-layout { grid-template-columns: 1fr; gap: 2rem; }
+      footer { grid-template-columns: 1fr 1fr; gap: 2rem; padding: 2rem 1.5rem; }
+      .footer-brand { grid-column: 1 / -1; }
+      .footer-bottom { flex-direction: column; gap: 0.5rem; padding: 1rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <span class="nav-logo">LUXE</span>
+  <ul class="nav-links">
+    <li><a href="#products">Shop</a></li>
+    <li><a href="#features">Why Us</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="nav-actions">
+    <button class="cart-btn" onclick="openCart()">Cart (<span id="cart-count">0</span>)</button>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <p class="hero-eyebrow">New Collection 2026</p>
+  <h1>Crafted for<br/><em>the Discerning</em></h1>
+  <p class="hero-sub">Curated luxury goods for those who appreciate the art of refinement. Every piece, a statement.</p>
+  <div class="hero-cta">
+    <a href="#products" class="btn-primary">Shop Now</a>
+    <a href="#contact" class="btn-ghost">Get in Touch</a>
+  </div>
+</section>
+
+<!-- ── PRODUCTS ── -->
+<section class="section" id="products">
+  <div class="products-header">
+    <p class="section-tag">Our Collection</p>
+    <h2 class="section-title">Featured Products</h2>
+    <p class="section-sub">Handpicked selections from our exclusive catalog, designed to elevate the everyday.</p>
+  </div>
+  <div class="products-grid">
+
+    <div class="product-card">
+      <div class="product-img p1">
+        <div class="product-img-inner"><span class="product-icon">⌚</span></div>
+        <span class="product-badge">New</span>
+      </div>
+      <div class="product-info">
+        <p class="product-category">Accessories</p>
+        <h3 class="product-name">Midnight Timepiece</h3>
+        <div class="product-footer">
+          <div><span class="product-price">₹24,999</span><span class="product-old">₹32,000</span></div>
+          <button class="add-cart" onclick="addToCart(this, 'Midnight Timepiece')">Add</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-img p2">
+        <div class="product-img-inner"><span class="product-icon">👜</span></div>
+      </div>
+      <div class="product-info">
+        <p class="product-category">Bags</p>
+        <h3 class="product-name">Scarlet Leather Tote</h3>
+        <div class="product-footer">
+          <div><span class="product-price">₹18,500</span></div>
+          <button class="add-cart" onclick="addToCart(this, 'Scarlet Leather Tote')">Add</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-img p3">
+        <div class="product-img-inner"><span class="product-icon">💎</span></div>
+        <span class="product-badge">Hot</span>
+      </div>
+      <div class="product-info">
+        <p class="product-category">Jewellery</p>
+        <h3 class="product-name">Emerald Drop Earrings</h3>
+        <div class="product-footer">
+          <div><span class="product-price">₹8,999</span><span class="product-old">₹12,000</span></div>
+          <button class="add-cart" onclick="addToCart(this, 'Emerald Drop Earrings')">Add</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-img p4">
+        <div class="product-img-inner"><span class="product-icon">🧥</span></div>
+      </div>
+      <div class="product-info">
+        <p class="product-category">Apparel</p>
+        <h3 class="product-name">Amber Wool Overcoat</h3>
+        <div class="product-footer">
+          <div><span class="product-price">₹39,000</span></div>
+          <button class="add-cart" onclick="addToCart(this, 'Amber Wool Overcoat')">Add</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-img p5">
+        <div class="product-img-inner"><span class="product-icon">👟</span></div>
+        <span class="product-badge">Limited</span>
+      </div>
+      <div class="product-info">
+        <p class="product-category">Footwear</p>
+        <h3 class="product-name">Cobalt Suede Derby</h3>
+        <div class="product-footer">
+          <div><span class="product-price">₹14,200</span><span class="product-old">₹18,000</span></div>
+          <button class="add-cart" onclick="addToCart(this, 'Cobalt Suede Derby')">Add</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-img p6">
+        <div class="product-img-inner"><span class="product-icon">🌹</span></div>
+      </div>
+      <div class="product-info">
+        <p class="product-category">Fragrance</p>
+        <h3 class="product-name">Rose Noir Eau de Parfum</h3>
+        <div class="product-footer">
+          <div><span class="product-price">₹6,499</span></div>
+          <button class="add-cart" onclick="addToCart(this, 'Rose Noir Eau de Parfum')">Add</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── FEATURES ── -->
+<section class="section" id="features">
+  <div style="text-align:center; margin-bottom: 0.5rem;">
+    <p class="section-tag">Why Choose Us</p>
+    <h2 class="section-title">The LUXE Promise</h2>
+  </div>
+  <div class="features-grid">
+    <div class="feature-item">
+      <div class="feature-icon">🚚</div>
+      <h3 class="feature-title">Free Shipping</h3>
+      <p class="feature-desc">Complimentary delivery on all orders above ₹5,000 across India.</p>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">🔒</div>
+      <h3 class="feature-title">Secure Payment</h3>
+      <p class="feature-desc">End-to-end encrypted transactions with all major cards, UPI & wallets.</p>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">↩️</div>
+      <h3 class="feature-title">Easy Returns</h3>
+      <p class="feature-desc">Hassle-free 30-day returns with no questions asked policy.</p>
+    </div>
+    <div class="feature-item">
+      <div class="feature-icon">✨</div>
+      <h3 class="feature-title">Authenticity</h3>
+      <p class="feature-desc">Every product comes with a certificate of authenticity and QC seal.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── CONTACT FORM ── -->
+<section class="section" id="contact">
+  <div class="contact-layout">
+    <div class="contact-info">
+      <p class="section-tag">Get in Touch</p>
+      <h2>We'd love to <em style="font-style:italic; color:var(--gold)">hear</em> from you</h2>
+      <p>Whether you have a question about a product, need styling advice, or want to place a custom order — our team is ready to assist.</p>
+      <div class="contact-detail"><span>📍</span><p>42 Luxury Lane, Jubilee Hills, Hyderabad, Telangana 500033</p></div>
+      <div class="contact-detail"><span>📞</span><p>+91 98765 43210</p></div>
+      <div class="contact-detail"><span>✉️</span><p>hello@luxestore.in</p></div>
+    </div>
+
+    <div class="contact-form">
+      <!-- FORM -->
+      <form id="contact-form" novalidate>
+        <div class="form-group">
+          <label for="fname">Full Name</label>
+          <input type="text" id="fname" placeholder="Arjun Sharma" />
+          <span class="form-error" id="err-fname">Please enter your full name.</span>
+        </div>
+        <div class="form-group">
+          <label for="femail">Email Address</label>
+          <input type="email" id="femail" placeholder="arjun@email.com" />
+          <span class="form-error" id="err-femail">Please enter a valid email address.</span>
+        </div>
+        <div class="form-group">
+          <label for="fphone">Phone Number</label>
+          <input type="tel" id="fphone" placeholder="+91 98765 43210" />
+          <span class="form-error" id="err-fphone">Please enter a valid phone number.</span>
+        </div>
+        <div class="form-group">
+          <label for="fsubject">Subject</label>
+          <select id="fsubject">
+            <option value="">— Select a subject —</option>
+            <option value="order">Order Enquiry</option>
+            <option value="product">Product Information</option>
+            <option value="return">Return / Refund</option>
+            <option value="custom">Custom Order</option>
+            <option value="other">Other</option>
+          </select>
+          <span class="form-error" id="err-fsubject">Please select a subject.</span>
+        </div>
+        <div class="form-group">
+          <label for="fmessage">Message</label>
+          <textarea id="fmessage" placeholder="Tell us how we can help you..."></textarea>
+          <span class="form-error" id="err-fmessage">Please enter a message (min. 10 characters).</span>
+        </div>
+        <button type="submit" class="form-submit" id="form-submit-btn">Send Message</button>
+      </form>
+
+      <!-- THANK YOU -->
+      <div class="thank-you" id="thank-you">
+        <div class="thank-you-icon">✅</div>
+        <h3>Thank You!</h3>
+        <p>Your message has been received. A member of our team will reach out to you within 24 hours. We appreciate your interest in LUXE.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-brand">
+    <span class="nav-logo">LUXE</span>
+    <p>Curated luxury goods for those who appreciate the art of refinement. Delivered with love from Hyderabad.</p>
+  </div>
+  <div class="footer-col">
+    <h4>Shop</h4>
+    <ul>
+      <li><a href="#products">New Arrivals</a></li>
+      <li><a href="#products">Accessories</a></li>
+      <li><a href="#products">Apparel</a></li>
+      <li><a href="#products">Fragrances</a></li>
+    </ul>
+  </div>
+  <div class="footer-col">
+    <h4>Help</h4>
+    <ul>
+      <li><a href="#contact">Contact Us</a></li>
+      <li><a href="#">FAQs</a></li>
+      <li><a href="#">Shipping Policy</a></li>
+      <li><a href="#">Returns</a></li>
+    </ul>
+  </div>
+  <div class="footer-col">
+    <h4>Company</h4>
+    <ul>
+      <li><a href="#">About Us</a></li>
+      <li><a href="#">Careers</a></li>
+      <li><a href="#">Privacy Policy</a></li>
+      <li><a href="#">Terms of Service</a></li>
+    </ul>
+  </div>
+</footer>
+<div class="footer-bottom">
+  <span>© 2026 LUXE Store. All rights reserved.</span>
+  <span>Made with ❤️ in Hyderabad, India</span>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- ── JS ── -->
+<script>
+  /* Cart */
+  let cartCount = 0;
+  function addToCart(btn, name) {
+    cartCount++;
+    document.getElementById('cart-count').textContent = cartCount;
+    showToast('✓  ' + name + ' added to cart');
+    btn.textContent = '✓';
+    setTimeout(() => btn.textContent = 'Add', 1500);
+  }
+  function openCart() {
+    showToast('🛒  Cart — ' + cartCount + ' item(s)');
+  }
+
+  /* Toast */
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
+  }
+
+  /* Form Validation */
+  document.getElementById('contact-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    let valid = true;
+
+    const name    = document.getElementById('fname');
+    const email   = document.getElementById('femail');
+    const phone   = document.getElementById('fphone');
+    const subject = document.getElementById('fsubject');
+    const message = document.getElementById('fmessage');
+
+    const clearErr = id => document.getElementById(id).classList.remove('visible');
+    const showErr  = id => document.getElementById(id).classList.add('visible');
+
+    clearErr('err-fname'); clearErr('err-femail');
+    clearErr('err-fphone'); clearErr('err-fsubject'); clearErr('err-fmessage');
+
+    if (!name.value.trim() || name.value.trim().length < 2) { showErr('err-fname'); valid = false; }
+    const emailRx = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRx.test(email.value.trim())) { showErr('err-femail'); valid = false; }
+    const phoneRx = /^[+]?[\d\s\-]{7,15}$/;
+    if (!phoneRx.test(phone.value.trim())) { showErr('err-fphone'); valid = false; }
+    if (!subject.value) { showErr('err-fsubject'); valid = false; }
+    if (!message.value.trim() || message.value.trim().length < 10) { showErr('err-fmessage'); valid = false; }
+
+    if (!valid) return;
+
+    const btn = document.getElementById('form-submit-btn');
+    btn.textContent = 'Sending…';
+    btn.disabled = true;
+
+    setTimeout(() => {
+      document.getElementById('contact-form').style.display = 'none';
+      document.getElementById('thank-you').classList.add('visible');
+    }, 1200);
+  });
+
+  /* Fade-in on scroll */
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.animation = 'fadeUp 0.7s ease both';
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.product-card, .feature-item').forEach(el => {
+    el.style.opacity = '0';
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>
